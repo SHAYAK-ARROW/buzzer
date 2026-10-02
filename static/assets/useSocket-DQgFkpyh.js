@@ -1,0 +1,1 @@
+import"./rolldown-runtime-hePW80VL.js";import{L as e,t}from"./token-CJiBv84G.js";import{t as n}from"./esm-CS_jafMM.js";e();var r=`http://localhost:5000`,i=null,a=()=>(i||=n(r,{auth:{token:t()},transports:[`websocket`],reconnectionAttempts:5,reconnectionDelay:2e3}),i);export{a as t};

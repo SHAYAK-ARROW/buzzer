@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-NZYk81nU.js";var t=e();function n(){return(0,t.jsxs)(`div`,{style:{padding:`2rem`},children:[(0,t.jsx)(`h2`,{children:`Admin: Users`}),(0,t.jsx)(`p`,{children:`Coming soon...`})]})}export{n as default};

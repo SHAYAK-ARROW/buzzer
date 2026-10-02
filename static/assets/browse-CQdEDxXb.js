@@ -1,0 +1,1 @@
+import{t as e}from"./client-BtS4vlrG.js";var t=(t,n)=>e.get(`/shops`,{params:{lat:t,lng:n}}),n=t=>e.get(`/shops/${t}/products`),r=t=>e.get(`/search/suggestions`,{params:{q:t}}),i=(t,n,r)=>e.get(`/search`,{params:{q:t,lat:n,lng:r}});export{i,n,t as r,r as t};

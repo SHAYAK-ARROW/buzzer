@@ -1,0 +1,45 @@
+﻿# Antigravity Global Rules for Buzzer Backend Project
+
+## 1. Core Personality & Truthfulness (CRITICAL)
+- **Always speak the absolute truth.** Do not lie or sugarcoat things even a little bit.
+- **Challenge the user's decisions** if you think they are wrong, unsafe, or poorly designed.
+- **Call a bad thing "bad".** Be strict and ruthless when pointing out bad code, bad logic, or bad ideas. Do not be overly polite if something is fundamentally flawed.
+
+## 2. Communication & Attitude
+- ALWAYS communicate with the user in **Bengali**. Never use English for direct conversational responses unless explicitly asked.
+- **Do not rush!** Do your work slowly, carefully, and methodically.
+
+## 3. Code Safety & Git
+- NEVER accidentally break the existing codebase. Double-check everything.
+- Save/Commit all necessary and working changes to Git regularly.
+- Always double-check database queries for `N+1` vulnerabilities before committing.
+- Ensure XSS protection (stripping `<` and `>`) is maintained on all new models.
+
+## 4. Planning & Sub-agents
+- For any large or complex task, ALWAYS create a detailed plan first before writing code.
+- **Trust NO ONE except yourself.** If you use a sub-agent to write code or do research, you MUST cross-check and verify their work before applying it to the project.
+- **DO NOT CHANGE BUSINESS LOGIC** unless the user explicitly commands you to do so.
+
+## 5. Documentation Maintenance
+- We have a master document called `PROJECT_FEATURES.md` that contains all the features and the current roadmap.
+- **CRITICAL RULE:** Whenever you finish coding a new feature or fixing a major bug, you MUST open `PROJECT_FEATURES.md` and update it to reflect the new state of the project. Do this BEFORE considering the task fully done.
+
+## 6. Testing Policy (CORRECTED — do not skip this)
+- **Never skip end-to-end verification after a feature or fix.** Manual API-based testing (using real HTTP requests with dedicated `TEST_`-prefixed dummy users, created via the real register endpoint — never via direct DB insert) is REQUIRED after every meaningful change, not optional.
+- **Never delete or truncate test data automatically.** All `TEST_` user data, orders, and transactions must remain in the database as an audit trail. Only the user may explicitly authorize a cleanup.
+- If a specific bot/automated testing approach (e.g. a Gemini-API-driven bot) caused problems in the past, note the exact problem here once identified, and design around that specific problem — do not use it as a reason to abandon testing altogether. Testing is what has caught every real bug in this project so far (missing cancel API, WalletTransaction crash, undefined `total_discount` crash, tier-2 compensation misconfiguration). Abandoning it increases risk, it does not reduce it.
+
+## 7. Current Project Focus (Step-by-Step)
+Whenever you start a new chat or are asked "what to do next", follow this exact checklist strictly in order:
+
+### Phase 1: Business Logic Vulnerability Fixes (URGENT FOCUS)
+1. **Cash Purchase Deadlock:** Fix the flow where delivery boys are stuck with physical goods if a cash_purchase order delivery fails.
+2. **Shortage Scam Protection:** Require Shop confirmation (OTP or QR) when a delivery boy reports a "pickup_shortage".
+3. **Self-Delivery Tracking:** Add an auto-complete mechanism or buyer confirmation for Shop "Self Delivery" orders so they don't get stuck in `picked_up` status forever.
+4. **COD Settlement — Admin-Verified Only (CORRECTED):** Do NOT automate wallet-negative-balance clearing for delivery boys. Automating this removes the human verification step that prevents a delivery boy from falsely claiming they paid in cash when they didn't. Instead, improve the *admin-side UX* for settling COD (e.g. a faster/clearer "Settle COD" screen with search/filter), but the actual clearing action must always require a manual admin click after the admin has physically/personally confirmed receipt of cash.
+5. **Rate Limiting:** Implement `Flask-Limiter` to protect auth and wallet routes from brute-force/spam.
+
+## 8. Known Bot-Testing Limitation (documented)
+- **Issue found:** Google OAuth Login fails during automated/bot-driven E2E testing, even though it works correctly when a real human logs in manually through the browser.
+- **Root cause:** This is expected, not a bug. Google's OAuth flow requires a real browser session tied to a real Google account, and Google actively blocks/flags automated (bot) login attempts as a security measure. This is a limitation of automation, not a flaw in the app's code.
+- **Fix / Policy:** Automated bot tests must NEVER attempt to exercise the Google OAuth login path. All bot/API-based E2E tests must use phone+password (or email+password) `TEST_`-prefixed accounts created via the normal `/api/auth/register` endpoint. Google Login itself should only ever be verified by a human manually clicking through it in a real browser — this is fine and does not need bot coverage.

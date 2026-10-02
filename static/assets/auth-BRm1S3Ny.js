@@ -1,0 +1,1 @@
+import{t as e}from"./client-BtS4vlrG.js";var t=(t,n)=>e.post(`/auth/login`,{email:t,password:n}),n=t=>e.post(`/auth/register`,t);export{n,t};

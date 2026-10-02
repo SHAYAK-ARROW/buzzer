@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.flaskenv
+instance/
+*.sqlite3
+*.db
+patch_*.py
+fix_*.py
+
+# Chat Logs
+full_chat_dump.md
+reports/
+CHAT.md
